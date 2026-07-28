@@ -1,11 +1,11 @@
 {
     "name": "koh/sylius-x402",
-    "description": "x402 payment middleware for Sylius API routes",
+    "description": "x402 payment middleware for Sylius API routes: HTTP 402 with payment requirements agents can fulfil.",
     "type": "sylius-bundle",
     "license": "MIT",
     "keywords": [
         "sylius",
-        " HTTP 402 with payment requirements agents can fulfil.:x402",
+        "x402",
         "payment",
         "402",
         "micropayment",
