@@ -63,6 +63,18 @@ final class X402RequestListener
         }
     }
 
+    /**
+     * @param string $resource the gated URI, echoed back so the payer knows what
+     *                         they are paying for
+     *
+     * Built from the request rather than from AgentContext, unlike the rest of
+     * this package family. That makes it the one URL here a caller can steer via
+     * the Host header. It is left that way deliberately: this response goes back
+     * to whoever sent the request and carries no-store, so a spoofed host
+     * misleads only the spoofer. Worth aligning when this listener next changes
+     * — it would mean taking an AgentContextFactory the listener does not
+     * currently need.
+     */
     private function challenge(PaymentRequiredException $exception, string $resource): Response
     {
         $response = new JsonResponse([
