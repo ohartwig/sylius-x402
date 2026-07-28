@@ -1,0 +1,78 @@
+{
+    "name": "koh/sylius-x402",
+    "description": "x402 payment middleware for Sylius API routes",
+    "type": "sylius-bundle",
+    "license": "MIT",
+    "keywords": [
+        "sylius",
+        " HTTP 402 with payment requirements agents can fulfil.:x402",
+        "payment",
+        "402",
+        "micropayment",
+        "agent"
+    ],
+    "authors": [
+        {
+            "name": "Kai Ole Hartwig",
+            "email": "mail@ole-hartwig.eu"
+        }
+    ],
+    "homepage": "https://ole-hartwig.eu/open-source/sylius-agent-ready",
+    "support": {
+        "issues": "https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/-/issues",
+        "source": "https://github.com/ole-hartwig/sylius-x402"
+    },
+    "require": {
+        "koh/sylius-agent-contracts": "^1.1",
+        "php": "^8.2",
+        "psr/log": "^2.0 || ^3.0",
+        "sylius/sylius": "^2.0",
+        "symfony/config": "^7.4 || ^8.0",
+        "symfony/dependency-injection": "^7.4 || ^8.0",
+        "symfony/event-dispatcher": "^7.4 || ^8.0",
+        "symfony/http-foundation": "^7.4 || ^8.0",
+        "symfony/http-kernel": "^7.4 || ^8.0",
+        "symfony/routing": "^7.4 || ^8.0"
+    },
+    "require-dev": {
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Koh\\SyliusX402\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Koh\\SyliusX402\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://git.ole-hartwig.eu/api/v4/group/1091/-/packages/composer/packages.json",
+            "only": [
+                "koh/*"
+            ]
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "suggest": {
+        "sandermuller/php-x402": "Real on-chain verification and settlement. Without it the bundle advertises payment requirements but settles nothing."
+    }
+}
