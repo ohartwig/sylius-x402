@@ -1,3 +1,15 @@
+## [1.1.1](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.0...v1.1.1) (2026-07-28)
+
+### :bug: Fixes
+
+* honour the request method when matching a payment rule ([aaf25bf](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/aaf25bf3ead3bcf55174d6d31e9ea1a800d81622))
+
+### :repeat: Chores
+
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.26.1 ([c45e3cd](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/c45e3cdafc74611b370788c8dbc2e3cbef08a235))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.26.2 ([4c3d635](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/4c3d635d4311ebd7fb83098cc799be32ca78a00b))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.26.3 ([f4d7ad3](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/f4d7ad3026ee526b9b9cb7bca4f469fc6df6decd))
+
 ## [1.1.0](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.0.0...v1.1.0) (2026-07-28)
 
 ### :sparkles: Features
