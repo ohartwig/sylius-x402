@@ -1,3 +1,14 @@
+## [1.1.0](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.0.0...v1.1.0) (2026-07-28)
+
+### :sparkles: Features
+
+* declare licensing for config files via REUSE.toml ([5a6f540](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/5a6f540453f381cf1399ec1f937a47a2a16fdb56))
+
+### :repeat: Chores
+
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.25.0 ([f76a64f](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/f76a64f58a4edadd462712daee3ea9bc416def90))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.25.1 ([78c89e1](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/78c89e1206831850fcb94a5b31075fd68abec0b8))
+
 ## 1.0.0 (2026-07-28)
 
 ### :sparkles: Features
