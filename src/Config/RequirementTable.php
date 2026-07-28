@@ -25,7 +25,12 @@ final class RequirementTable
 
     public function match(string $path, string $method = 'GET'): ?PaymentRequirement
     {
+        $method = strtoupper($method);
+
         foreach ($this->requirements as $requirement) {
+            if (!$requirement->coversMethod($method)) {
+                continue;
+            }
             if (1 === preg_match('{'.$requirement->pattern.'}', $path)) {
                 return $requirement;
             }

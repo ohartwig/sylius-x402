@@ -12,12 +12,17 @@ use Koh\SyliusX402\Payment\PaymentRequirement;
 final class RequirementTableFactory
 {
     /**
-     * @param list<array{pattern: string, amount: string, description?: string|null}> $resources
+     * @param list<array{pattern: string, amount: string, description?: string|null, methods?: list<string>}> $resources
      */
     public static function create(array $resources, string $network, string $asset, string $payTo): RequirementTable
     {
         $requirements = [];
         foreach ($resources as $resource) {
+            $methods = array_values(array_map(
+                static fn (string $m): string => strtoupper($m),
+                $resource['methods'] ?? [],
+            ));
+
             $requirements[] = new PaymentRequirement(
                 pattern: $resource['pattern'],
                 amount: (string) $resource['amount'],
@@ -25,6 +30,7 @@ final class RequirementTableFactory
                 asset: $asset,
                 payTo: $payTo,
                 description: $resource['description'] ?? null,
+                methods: $methods,
             );
         }
 

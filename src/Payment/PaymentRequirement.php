@@ -13,7 +13,8 @@ namespace Koh\SyliusX402\Payment;
 final readonly class PaymentRequirement
 {
     /**
-     * @param string $amount ASCII digits in the asset's smallest unit
+     * @param string       $amount  ASCII digits in the asset's smallest unit
+     * @param list<string> $methods HTTP methods this rule applies to; empty = all
      */
     public function __construct(
         public string $pattern,
@@ -24,7 +25,22 @@ final readonly class PaymentRequirement
         public ?string $description = null,
         public string $scheme = 'exact',
         public int $maxTimeoutSeconds = 60,
+        public array $methods = [],
     ) {
+    }
+
+    /**
+     * Whether this rule speaks for the given method.
+     *
+     * An empty list means every method, which is the right default for a feed:
+     * gating GET but leaving HEAD free would let a caller confirm a resource
+     * exists, and its size, without paying. A rule that names methods is the
+     * exception — gating POST on a transport endpoint whose GET is a harmless
+     * capability probe.
+     */
+    public function coversMethod(string $method): bool
+    {
+        return [] === $this->methods || \in_array(strtoupper($method), $this->methods, true);
     }
 
     /**

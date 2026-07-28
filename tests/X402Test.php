@@ -57,6 +57,53 @@ final class X402Test extends TestCase
         self::assertStringContainsString('no-store', (string) $response?->headers->get('Cache-Control'));
     }
 
+    /**
+     * The listener has always passed the request method into match(); until now
+     * match() ignored it, so a rule scoped to POST silently gated every method.
+     */
+    public function testAMethodScopedRuleLeavesOtherMethodsAlone(): void
+    {
+        $table = RequirementTableFactory::create(
+            [['pattern' => '^/_mcp$', 'amount' => '500', 'methods' => ['POST']]],
+            'eip155:84532',
+            '0xAsset',
+            '0xPayee',
+        );
+
+        self::assertNotNull($table->match('/_mcp', 'POST'));
+        self::assertNull($table->match('/_mcp', 'GET'));
+    }
+
+    public function testAMethodScopedRuleIsCaseInsensitive(): void
+    {
+        $table = RequirementTableFactory::create(
+            [['pattern' => '^/_mcp$', 'amount' => '500', 'methods' => ['post']]],
+            'eip155:84532',
+            '0xAsset',
+            '0xPayee',
+        );
+
+        self::assertNotNull($table->match('/_mcp', 'POST'));
+    }
+
+    /**
+     * Empty is every method, HEAD included: gating GET alone would hand out a
+     * resource's existence and size for free.
+     */
+    public function testARuleWithoutMethodsGatesAllOfThem(): void
+    {
+        $table = RequirementTableFactory::create(
+            [['pattern' => '^/api/agent/feed', 'amount' => '10000']],
+            'eip155:84532',
+            '0xAsset',
+            '0xPayee',
+        );
+
+        foreach (['GET', 'HEAD', 'POST', 'PATCH'] as $method) {
+            self::assertNotNull($table->match('/api/agent/feed', $method), $method.' slipped through');
+        }
+    }
+
     public function testUngatedRoutesAreUntouched(): void
     {
         self::assertFalse($this->dispatch('/de_DE/products/zigarre')->hasResponse());
