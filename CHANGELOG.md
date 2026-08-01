@@ -1,3 +1,18 @@
+## [1.1.3](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.2...v1.1.3) (2026-08-01)
+
+### :bug: Fixes
+
+* **phpstan:** resolve all 5 level-8 findings without suppressions ([45604d3](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/45604d3efec2009ff7bb7a872d12558a1837f5ab))
+
+### :zap: Refactor
+
+* **phpstan:** use the shared level-8 standard ([27d1757](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/27d17572032906601a46cda7287620a2abdc11d5))
+
+### :repeat: Chores
+
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.32.2 ([a9fdb0b](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/a9fdb0bbc7508f806d03317e489eaece2c2b7316))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.32.4 ([2957edb](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/2957edb954f61ad97836a0908fdf9da47a2f77f5))
+
 ## [1.1.2](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.1...v1.1.2) (2026-08-01)
 
 ### :memo: Documentation
