@@ -18,14 +18,14 @@ final class RequirementTableFactory
     {
         $requirements = [];
         foreach ($resources as $resource) {
-            $methods = array_values(array_map(
+            $methods = array_map(
                 static fn (string $m): string => strtoupper($m),
                 $resource['methods'] ?? [],
-            ));
+            );
 
             $requirements[] = new PaymentRequirement(
                 pattern: $resource['pattern'],
-                amount: (string) $resource['amount'],
+                amount: $resource['amount'],
                 network: $network,
                 asset: $asset,
                 payTo: $payTo,

@@ -66,13 +66,13 @@ final class KohSyliusX402Bundle extends AbstractBundle
     }
 
     /**
-     * @param array<string, mixed> $config
+     * @param array<mixed> $config
      */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $resources = [];
         foreach ($config['resources'] ?? [] as $resource) {
-            if (\is_array($resource) && ($resource['enabled'] ?? true)) {
+            if (\is_array($resource) && false !== ($resource['enabled'] ?? true)) {
                 $resources[] = $resource;
             }
         }
