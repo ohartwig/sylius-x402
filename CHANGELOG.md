@@ -1,3 +1,13 @@
+## [1.1.6](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.5...v1.1.6) (2026-08-12)
+
+### :bug: Fixes
+
+* **deps:** update dependency php to ^8.5.9 ([4a87db7](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/4a87db7c8dfe64952822e7a439c1cee4e2c4f290))
+
+### :repeat: Chores
+
+* **deps:** update dependency phpunit/phpunit to ^11.5.50 [security] ([02155cf](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/02155cf9409e264ed4fbf2d07b8f6ef7938986c6))
+
 ## [1.1.5](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.4...v1.1.5) (2026-08-12)
 
 ### :bug: Fixes
