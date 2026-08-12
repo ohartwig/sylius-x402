@@ -1,3 +1,27 @@
+## [1.1.5](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.4...v1.1.5) (2026-08-12)
+
+### :bug: Fixes
+
+* **deps:** update dependency sylius/sylius to ^2.0.18 [security] ([05209e7](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/05209e7a0fe5e9edc6624d74e35f0efbea1dd05e))
+* **deps:** update dependency sylius/sylius to ^2.2.8 ([8b354ac](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/8b354ac56a5077c949162e5ce18f4ed7f9faece8))
+
+### :white_check_mark: Tests
+
+* **payment:** cover the x402 price configuration and its declaration ([82955bd](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/82955bddf3ab75292238721bbbd8ccdfb3fab6db))
+
+### :repeat: Continuous Integrations
+
+* follow the composed pipeline on [@1](https://git.ole-hartwig.eu/1) instead of an exact pin ([060cca0](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/060cca02aadbf6e748edc188355e720d55e92797))
+
+### :repeat: Chores
+
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.36.12 ([05a8b59](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/05a8b59f0dec90201726422d77e37489748e3845))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.36.5 ([69e9a34](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/69e9a34523039280bd79556ca4f565338dd2cec9))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.36.6 ([cd78a2a](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/cd78a2a3fc1ba7ac1eb643bb7899a8e90e3b3d73))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.36.8 ([5118910](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/5118910229a5559548d1ac440bef2b28014b0346))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v1.36.9 ([f520413](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/f520413f86aa36af908dfc1b1013fe5587f24bf2))
+* **deps:** update phpstan packages ([a9e7b2c](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/a9e7b2c1cd8c20d5852fc972ca42159357cac639))
+
 ## [1.1.4](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.3...v1.1.4) (2026-08-03)
 
 ### :repeat: Chores
