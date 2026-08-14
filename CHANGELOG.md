@@ -1,3 +1,9 @@
+## [1.1.8](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.7...v1.1.8) (2026-08-14)
+
+### :bug: Fixes
+
+* allow the infection extension installer plugin ([492e562](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/492e5629ca6b2a48b058f3a2887b5e006ebabe2a))
+
 ## [1.1.7](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.6...v1.1.7) (2026-08-13)
 
 ### :repeat: Chores
