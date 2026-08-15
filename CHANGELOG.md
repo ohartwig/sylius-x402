@@ -1,3 +1,9 @@
+## [1.1.9](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.8...v1.1.9) (2026-08-15)
+
+### :repeat: Chores
+
+* **ci:** enrol the Renovate bot's signing key ([ec16ed8](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/ec16ed87591a88e31fecf167f74c2680b6f21f97))
+
 ## [1.1.8](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.7...v1.1.8) (2026-08-14)
 
 ### :bug: Fixes
