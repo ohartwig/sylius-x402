@@ -1,3 +1,9 @@
+## [1.1.15](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.14...v1.1.15) (2026-09-02)
+
+### :bug: Fixes
+
+* **deps:** update dependency php to ^8.5.10 ([6e8eeb6](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/6e8eeb68bbab15a38865993fd16fab472421f5e4))
+
 ## [1.1.14](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.13...v1.1.14) (2026-09-01)
 
 ### :repeat: Chores
