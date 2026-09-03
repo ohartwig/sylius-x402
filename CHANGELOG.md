@@ -1,3 +1,9 @@
+## [1.1.17](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.16...v1.1.17) (2026-09-03)
+
+### :bug: Fixes
+
+* **deps:** update dependency sylius/sylius to ^2.2.9 ([5d9b8e4](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/5d9b8e4ed8c40cc2f6825eeca866bd7fe1baeaee))
+
 ## [1.1.16](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.15...v1.1.16) (2026-09-02)
 
 ### :repeat: Chores
