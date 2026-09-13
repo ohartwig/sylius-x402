@@ -1,3 +1,14 @@
+## [1.1.19](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.18...v1.1.19) (2026-09-13)
+
+### :repeat: Continuous Integrations
+
+* release with yasrt ([422c805](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/422c805cf891aa784ea499e30f253c720049381e))
+
+### :repeat: Chores
+
+* **deps:** update dependency phpstan/phpstan to ^2.2.14 ([6254653](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/62546536306723055e8170a3378ceec6774c5b29))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v2 ([d9d304d](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/d9d304d333498dd016a3651bc5bde7f927bb171c))
+
 ## [1.1.18](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.17...v1.1.18) (2026-09-04)
 
 ### :repeat: Chores
