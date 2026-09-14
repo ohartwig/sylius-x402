@@ -1,3 +1,9 @@
+## [1.1.20](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.19...v1.1.20) (2026-09-14)
+
+### :bug: Fixes
+
+* **docs:** Markdown-Hygiene fuer lint:markdown ([7803157](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/780315727a5e4672ac83507dea40a8ea6e016d5a))
+
 ## [1.1.19](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.18...v1.1.19) (2026-09-13)
 
 ### :repeat: Continuous Integrations
