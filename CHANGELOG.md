@@ -1,3 +1,9 @@
+## [1.1.23](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.22...v1.1.23) (2026-09-26)
+
+### :repeat: Chores
+
+* **deps:** update dependency phpstan/phpstan to ^2.2.16 ([310ead2](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/310ead2fbb65bf2c7bfdef892ec5eefa98863e15))
+
 ## [1.1.22](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.21...v1.1.22) (2026-09-26)
 
 ### :bug: Fixes
