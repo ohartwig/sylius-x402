@@ -1,3 +1,15 @@
+## [1.1.24](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.23...v1.1.24) (2026-09-28)
+
+### :memo: Documentation
+
+* add a README ([428e676](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/428e6767b7e91957732a863d7b78ff8aace23f44))
+* point project metadata and contribution paths at GitHub ([56ab079](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/56ab079228a8414536c74dea5543649269cace71))
+
+### :repeat: Chores
+
+* **reuse:** cover the template-synced .mise.toml and signing key ([95b9b6a](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/95b9b6ab699d4ede3bad0d1c37f117127aa61222))
+* **license:** name the copyright holder with a contact address ([18e7574](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/18e75743d800236c8ca14132d29ea6dc3c255cbf))
+
 ## [1.1.23](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.22...v1.1.23) (2026-09-26)
 
 ### :repeat: Chores
