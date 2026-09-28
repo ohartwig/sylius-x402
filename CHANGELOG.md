@@ -1,3 +1,13 @@
+## [1.1.26](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.25...v1.1.26) (2026-09-28)
+
+### :repeat: Continuous Integrations
+
+* mirror releases to GitHub and notify Packagist ([175e71c](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/175e71c0d8d506177e78ae549068b93b1b5a49f1))
+
+### :repeat: Chores
+
+* **repo-templates:** sync ([80e7e31](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/80e7e31c6cbee9ad23b6f7febb2ecc4a7cbeca9e))
+
 ## [1.1.25](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.24...v1.1.25) (2026-09-28)
 
 ### :repeat: Chores
