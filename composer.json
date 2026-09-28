@@ -17,10 +17,10 @@
             "email": "mail@ole-hartwig.eu"
         }
     ],
-    "homepage": "https://ole-hartwig.eu/open-source/sylius-agent-ready",
+    "homepage": "https://github.com/ohartwig/sylius-x402",
     "support": {
-        "issues": "https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/-/issues",
-        "source": "https://github.com/ole-hartwig/sylius-x402"
+        "issues": "https://github.com/ohartwig/sylius-x402/issues",
+        "source": "https://github.com/ohartwig/sylius-x402"
     },
     "require": {
         "koh/sylius-agent-contracts": "^1.1",
