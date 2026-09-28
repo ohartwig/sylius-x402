@@ -1,3 +1,9 @@
+## [1.1.25](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.24...v1.1.25) (2026-09-28)
+
+### :repeat: Chores
+
+* **repo-templates:** sync ([9522867](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/9522867e4b4758f107071fc7017f1c79bb9fdd86))
+
 ## [1.1.24](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.23...v1.1.24) (2026-09-28)
 
 ### :memo: Documentation
