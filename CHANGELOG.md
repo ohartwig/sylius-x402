@@ -1,3 +1,15 @@
+## [1.1.29](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.28...v1.1.29) (2026-09-30)
+
+### :bug: Fixes
+
+* **deps:** update dependency sylius/sylius to ^2.3.0 ([00fa11a](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/00fa11af5fe97fa32e340770adc5f7ace9f908ef))
+
+### :repeat: Continuous Integrations
+
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v2.21.16 ([780a9f8](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/780a9f8573d706ca7ad636a13831118fc83d1e9c))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v2.21.10 ([1078ef7](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/1078ef7a4321a5227883777533c2044bf126fbbe))
+* **deps:** update dependency devops/ci-cd-components/composed-default-pipelines to v2.21.9 ([07433fb](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/07433fbfb9dbddf0340f536a7fce0bb9135fb13c))
+
 ## [1.1.28](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.27...v1.1.28) (2026-09-28)
 
 ### :repeat: Chores
