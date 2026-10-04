@@ -1,3 +1,14 @@
+## [1.1.31](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.30...v1.1.31) (2026-10-04)
+
+### :repeat: Continuous Integrations
+
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.38.16 ([0802e72](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/0802e7279af3277b8033f4edd7afcaa12e15e25b))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.38.15 ([104b12e](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/104b12e880abe8bb8783b4348b1f2472d20253af))
+
+### :repeat: Chores
+
+* **repo-templates:** sync ([298ad92](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/298ad92869cb008f703c278a658c5a2ffd512892))
+
 ## [1.1.30](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.29...v1.1.30) (2026-10-04)
 
 ### :bug: Fixes
