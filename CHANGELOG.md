@@ -1,3 +1,9 @@
+## [1.1.33](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.32...v1.1.33) (2026-10-06)
+
+### :repeat: Chores
+
+* **deps:** update dependency phpunit/phpunit to ^11.5.57 ([4b32a98](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/4b32a9807b9b3c6d1a1385c9b4bf4b41c6a6355e))
+
 ## [1.1.32](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.31...v1.1.32) (2026-10-05)
 
 ### :repeat: Continuous Integrations
