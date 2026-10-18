@@ -1,3 +1,26 @@
+## [1.1.37](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.36...v1.1.37) (2026-10-18)
+
+### :bug: Fixes
+
+* admit PHP 8.3 and test the floor on it ([489351f](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/489351ff780bf2e7484e1a95f42a325d21e4bfb8))
+
+### :repeat: Continuous Integrations
+
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.40.6 ([cef0004](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/cef000460b36fe03af797f301b76efaa9c6981d2))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.40.5 ([85c42a2](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/85c42a24e0548323aef6c59a5cc774dfb5d88dbd))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.40.4 ([ce5223b](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/ce5223beac146b544f43cf5552ebd3c2bab11f8b))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.40.3 ([9e93bad](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/9e93badce6a5d2dc4a1c4decc11e858c8ef5e9d7))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.40.2 ([10fae85](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/10fae858769bbf47a3314fd4a2664ee3a500ae37))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.40.1 ([4312ca7](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/4312ca7f3181b7c8a3bb8682403f8a3c50876783))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.40.0 ([d514d11](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/d514d11414712a534b8321e684d453254fc3989e))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.39.15 ([2b3a340](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/2b3a34045e2a06b93106b1fd084428221ecd0f33))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.39.14 ([f403d11](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/f403d11096f397ad0e37f7e6055e3dc02c6f8067))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.39.13 ([722db69](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/722db69b6137ae4d1a7443713071b814f22daee5))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.39.12 ([b632805](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/b6328053a7c2bad3acd97a6d4882339563e6d72f))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.39.11 ([eb5c8a0](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/eb5c8a0c387457ef5257026bb96dfaa9a4378940))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.39.10 ([9dd8b8b](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/9dd8b8b3cc620647ff6c23dc0de0f8aeba83d448))
+* **deps:** update dependency devops/ci-cd-components/lint-tools to v1.39.9 ([8e2dbc8](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/8e2dbc8bd1235846a04eeda6aa4e8dd083efbb37))
+
 ## [1.1.36](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.35...v1.1.36) (2026-10-16)
 
 ### :repeat: Continuous Integrations
