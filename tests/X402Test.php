@@ -16,12 +16,17 @@ use Koh\SyliusX402\Payment\PaymentRequiredException;
 use Koh\SyliusX402\Payment\PaymentRequirement;
 use Koh\SyliusX402\Payment\PaymentVerifierInterface;
 use Koh\SyliusX402\Payment\VerifiedPayment;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 final class X402Test extends TestCase
 {
@@ -102,6 +107,36 @@ final class X402Test extends TestCase
         foreach (['GET', 'HEAD', 'POST', 'PATCH'] as $method) {
             self::assertNotNull($table->match('/api/agent/feed', $method), $method.' slipped through');
         }
+    }
+
+    /**
+     * AUD-010-F01: the router decodes the path before matching, so an encoded
+     * spelling of a gated path reaches the same controller. The gate must
+     * charge for what the router serves, not for how the client spelled it.
+     *
+     * @return iterable<string, array{string}>
+     */
+    public static function encodedSpellingsOfTheFeed(): iterable
+    {
+        yield 'plain' => ['/api/agent/feed'];
+        yield 'encoded letter' => ['/api/agent/fe%65d'];
+        yield 'encoded slash' => ['/api/agent%2Ffeed'];
+        yield 'encoded first segment' => ['/%61pi/agent/feed'];
+        yield 'lower-case escape' => ['/api/agent/fe%65%64'];
+    }
+
+    #[DataProvider('encodedSpellingsOfTheFeed')]
+    public function testAnEncodedSpellingOfAGatedPathIsStillGated(string $path): void
+    {
+        $routes = new RouteCollection();
+        $routes->add('koh_acp_product_feed', new Route('/api/agent/feed'));
+        $request = Request::create($path);
+
+        // Precondition: the router serves the feed for this spelling.
+        $matched = (new UrlMatcher($routes, (new RequestContext())->fromRequest($request)))->match($request->getPathInfo());
+        self::assertSame('koh_acp_product_feed', $matched['_route']);
+
+        self::assertSame(402, $this->dispatchRequest($request)->getResponse()?->getStatusCode());
     }
 
     public function testUngatedRoutesAreUntouched(): void
