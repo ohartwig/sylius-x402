@@ -1,3 +1,13 @@
+## [1.1.41](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.40...v1.1.41) (2026-11-04)
+
+### :bug: Fixes
+
+* **security:** gate the path the router resolves, not its raw spelling ([61b2ee9](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/61b2ee97f52844f5a417c4d276841ab92fe13a3c))
+
+### :zap: Refactor
+
+* drop the unreachable empty-path fallback ([5af1570](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/5af15708215154423188d33bbf6615fa08f3e24d))
+
 ## [1.1.40](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.39...v1.1.40) (2026-11-01)
 
 ### :repeat: Chores
