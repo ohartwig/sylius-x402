@@ -43,14 +43,11 @@ final class X402RequestListener
 
         $request = $event->getRequest();
         // Match what the router matches. getPathInfo() is the raw path, while
-        // Symfony's UrlMatcher decodes it first (rawurldecode($pathinfo) ?: '/'),
-        // so /api/agent/fe%65d would reach the feed without ever matching
-        // ^/api/agent/feed here.
-        $path = rawurldecode($request->getPathInfo());
-        if ('' === $path) {
-            $path = '/';
-        }
-        $requirement = $this->requirements->match($path, $request->getMethod());
+        // Symfony's UrlMatcher decodes it first (rawurldecode($pathinfo)), so
+        // /api/agent/fe%65d would reach the feed without ever matching
+        // ^/api/agent/feed here. (The matcher's "?: '/'" fallback cannot apply:
+        // path info always starts with a slash.)
+        $requirement = $this->requirements->match(rawurldecode($request->getPathInfo()), $request->getMethod());
         if (null === $requirement) {
             return;
         }
