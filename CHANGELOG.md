@@ -1,3 +1,9 @@
+## [1.1.42](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.41...v1.1.42) (2026-11-05)
+
+### :bug: Fixes
+
+* **security:** keep a paid response out of shared caches ([ad69de6](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/ad69de638c69a25d5ace6faea8c878eb765d34cb))
+
 ## [1.1.41](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.40...v1.1.41) (2026-11-04)
 
 ### :bug: Fixes
