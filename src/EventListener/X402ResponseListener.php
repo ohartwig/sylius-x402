@@ -22,6 +22,9 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
  */
 final class X402ResponseListener
 {
+    /** Server to client: base64-encoded `SettlementResponse` (x402 v2 HTTP transport). */
+    public const PAYMENT_RESPONSE_HEADER = 'PAYMENT-RESPONSE';
+
     public function __construct(
         private readonly PaymentVerifierInterface $verifier,
         private readonly ?LoggerInterface $logger = null,
@@ -44,7 +47,7 @@ final class X402ResponseListener
         // A response delivered against a payment is addressed to one payer.
         // Whatever the controller chose (the feed answers public, max-age=900,
         // stale-while-revalidate), a shared cache must not keep it and hand it
-        // to the next caller for free. Vary: X-PAYMENT would not do: a cache
+        // to the next caller for free. Vary: PAYMENT-SIGNATURE would not do: a cache
         // keyed on the header still serves a replayed header's response.
         $response->headers->set('Cache-Control', 'private, no-store');
         $response->headers->remove('Expires');
@@ -56,7 +59,8 @@ final class X402ResponseListener
         try {
             $receipt = $this->verifier->settle($payment);
             if (null !== $receipt) {
-                $response->headers->set('X-PAYMENT-RESPONSE', $receipt);
+                $response->headers->set(self::PAYMENT_RESPONSE_HEADER, $receipt);
+                $response->headers->set('Access-Control-Expose-Headers', self::PAYMENT_RESPONSE_HEADER);
             }
         } catch (\Throwable $exception) {
             // The caller already has their answer; failing the response now

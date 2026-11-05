@@ -13,10 +13,17 @@ use Koh\SyliusAgentContracts\Provider\PayableOperationProviderInterface;
 use Koh\SyliusX402\Config\RequirementTable;
 
 /**
- * Publishes the price table so MPP can declare it in the OpenAPI document.
+ * Publishes the price table on the shared payable-operation contract.
  *
  * One source for both: a route can never advertise a price it does not charge,
  * because the declaration and the enforcement read the same table.
+ *
+ * The rail is `x402`, which is a protocol of its own and not an MPP payment
+ * method. Since koh/sylius-agent-contracts can tell the two apart
+ * (`PayableOperation::isMppOffer()`), MPP discovery documents leave these
+ * operations out instead of offering an MPP challenge that never comes; the
+ * x402 price itself is announced by the 402 `PAYMENT-REQUIRED` header. Nothing
+ * is published while the gate is off.
  */
 final class X402PayableOperationProvider implements PayableOperationProviderInterface
 {

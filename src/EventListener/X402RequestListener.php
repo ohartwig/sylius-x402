@@ -26,6 +26,15 @@ final class X402RequestListener
 {
     public const PAYMENT_ATTRIBUTE = '_koh_x402_payment';
 
+    /** x402 protocol version spoken on the wire. */
+    public const X402_VERSION = 2;
+
+    /** Server to client: base64-encoded `PaymentRequired`. */
+    public const PAYMENT_REQUIRED_HEADER = 'PAYMENT-REQUIRED';
+
+    /** Client to server: base64-encoded `PaymentPayload`, read by the verifier. */
+    public const PAYMENT_SIGNATURE_HEADER = 'PAYMENT-SIGNATURE';
+
     /** @param iterable<PaymentBypassVoterInterface> $bypassVoters */
     public function __construct(
         private readonly RequirementTable $requirements,
@@ -69,6 +78,13 @@ final class X402RequestListener
     }
 
     /**
+     * The x402 v2 `PaymentRequired` answer (specs/x402-specification-v2.md 5.1,
+     * specs/transports-v2/http.md "Payment Required Signaling").
+     *
+     * The canonical carrier is the base64-encoded `PAYMENT-REQUIRED` header;
+     * the body repeats the same object as JSON, which the HTTP transport leaves
+     * to the server, so a client reading only the body still learns the price.
+     *
      * @param string $resource the gated URI, echoed back so the payer knows what
      *                         they are paying for
      *
@@ -82,14 +98,21 @@ final class X402RequestListener
      */
     private function challenge(PaymentRequiredException $exception, string $resource): Response
     {
-        $response = new JsonResponse([
-            'x402Version' => 1,
+        $paymentRequired = [
+            'x402Version' => self::X402_VERSION,
             'error' => $exception->getMessage(),
-            'accepts' => [$exception->requirement->toAccepts($resource)],
-        ], Response::HTTP_PAYMENT_REQUIRED);
+            'resource' => $exception->requirement->toResourceInfo($resource),
+            'accepts' => [$exception->requirement->toAccepts()],
+        ];
 
-        // A price is public information and agents read it cross-origin.
+        $json = json_encode($paymentRequired, \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR);
+        $response = new JsonResponse($json, Response::HTTP_PAYMENT_REQUIRED, [], true);
+        $response->headers->set(self::PAYMENT_REQUIRED_HEADER, base64_encode($json));
+
+        // A price is public information and agents read it cross-origin; a
+        // browser hides any response header not listed here.
         $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Expose-Headers', self::PAYMENT_REQUIRED_HEADER);
 
         // Never cache a 402: the requirement is per-request and a cached
         // challenge would keep serving after payment.

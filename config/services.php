@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $container): void {
             param('koh_x402.network'),
             param('koh_x402.asset'),
             param('koh_x402.pay_to'),
+            param('koh_x402.extra'),
         ])
         ->public();
 

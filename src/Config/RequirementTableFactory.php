@@ -13,8 +13,9 @@ final class RequirementTableFactory
 {
     /**
      * @param list<array{pattern: string, amount: string, description?: string|null, methods?: list<string>}> $resources
+     * @param array<string, mixed>                                                                             $extra     scheme-specific `extra` shared by every requirement
      */
-    public static function create(array $resources, string $network, string $asset, string $payTo): RequirementTable
+    public static function create(array $resources, string $network, string $asset, string $payTo, array $extra = []): RequirementTable
     {
         $requirements = [];
         foreach ($resources as $resource) {
@@ -31,6 +32,7 @@ final class RequirementTableFactory
                 payTo: $payTo,
                 description: $resource['description'] ?? null,
                 methods: $methods,
+                extra: $extra,
             );
         }
 

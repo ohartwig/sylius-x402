@@ -37,6 +37,8 @@ koh_x402:
     enabled: true
     network: 'eip155:84532'          # CAIP-2 chain id; default is Base Sepolia, a testnet
     asset: '0x…'                     # contract address of the settlement asset
+    asset_name: '…'                  # EIP-712 domain name of that contract, sent as extra.name
+    asset_version: '…'               # EIP-712 domain version, sent as extra.version
     pay_to: '0x…'                    # receiving address — required when enabled
     resources:
         - pattern: '^/agent/feed'    # regex against the path
@@ -49,6 +51,12 @@ koh_x402:
 
 - `enabled: true` without `pay_to` fails the container build. A price with no
   address to pay would deny access and collect nothing.
+- On an `eip155:` network, `enabled: true` also needs `asset`, `asset_name`
+  and `asset_version`. The `exact` scheme signs an EIP-3009 authorisation
+  against the token's EIP-712 domain, so a 402 without `extra.name` and
+  `extra.version` asks for a payment no client can sign.
+- `network` must be a CAIP-2 chain id and every `amount` digits only; anything
+  else fails the container build.
 - `methods` is empty by default, which gates **every** method. Gating `GET`
   but leaving `HEAD` free would reveal that a resource exists, and its size,
   without payment.
@@ -63,13 +71,14 @@ services:
     Koh\SyliusX402\Payment\PaymentVerifierInterface: '@App\Payment\X402Verifier'
 ```
 
-`verify()` checks the `X-PAYMENT` header against the requirement and throws
+`verify()` checks the `PAYMENT-SIGNATURE` header (a base64-encoded x402 v2
+`PaymentPayload`) against the requirement and throws
 `PaymentRequiredException` when it is missing or invalid. `settle()` runs only
 after the controller produced a **2xx** response — a request that ends in an
 error has delivered nothing and is not charged. A settlement failure at that
 point is logged and does not change the response; the caller already has what
-they paid for. A string returned from `settle()` is sent as
-`X-PAYMENT-RESPONSE`.
+they paid for. A string returned from `settle()` — the base64-encoded
+`SettlementResponse` — is sent as `PAYMENT-RESPONSE`.
 
 ### Letting authenticated agents through
 
@@ -81,27 +90,37 @@ request header the caller controls.
 
 ## Output
 
-A gated request without a valid payment:
+The bundle speaks x402 protocol version 2 over HTTP
+([`specs/x402-specification-v2.md`](https://github.com/coinbase/x402/blob/main/specs/x402-specification-v2.md),
+[`specs/transports-v2/http.md`](https://github.com/coinbase/x402/blob/main/specs/transports-v2/http.md)).
+A gated request without a valid payment gets the `PaymentRequired` object
+base64-encoded in the `PAYMENT-REQUIRED` header, and the same object as the
+JSON body:
 
 ```http
 HTTP/1.1 402 Payment Required
 Content-Type: application/json
 Cache-Control: no-store
 Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: PAYMENT-REQUIRED
+PAYMENT-REQUIRED: eyJ4NDAyVmVyc2lvbiI6Mi…
 
 {
-  "x402Version": 1,
+  "x402Version": 2,
   "error": "This resource advertises payment requirements but settlement is not configured.",
+  "resource": {
+    "url": "https://shop.example.com/agent/feed",
+    "description": "Product feed",
+    "mimeType": "application/json"
+  },
   "accepts": [{
     "scheme": "exact",
     "network": "eip155:84532",
-    "maxAmountRequired": "10000",
-    "resource": "https://shop.example.com/agent/feed",
-    "description": "Product feed",
-    "mimeType": "application/json",
+    "amount": "10000",
+    "asset": "0x…",
     "payTo": "0x…",
     "maxTimeoutSeconds": 60,
-    "asset": "0x…"
+    "extra": {"name": "…", "version": "…"}
   }]
 }
 ```
@@ -109,10 +128,11 @@ Access-Control-Allow-Origin: *
 A 402 is never cached: the requirement is per request, and a cached challenge
 would keep answering after payment.
 
-The same price table feeds `PayableOperationProviderInterface`, so
-`koh/sylius-mpp` declares it as `x-payment-info` in `/openapi.json`. A route
-cannot advertise a price it does not charge, because declaration and
-enforcement read the same configuration.
+The same price table feeds `PayableOperationProviderInterface`, under the rail
+`x402`. That is not an MPP payment method, so `koh/sylius-mpp` does not declare
+these operations as MPP `x-payment-info` offers; the 402 above is where an
+x402 client learns the price. While `enabled` is false nothing is published at
+all.
 
 ## Decommission
 

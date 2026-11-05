@@ -20,10 +20,16 @@ use Symfony\Component\HttpFoundation\Request;
 interface PaymentVerifierInterface
 {
     /**
+     * Checks the base64-encoded `PaymentPayload` in the `PAYMENT-SIGNATURE`
+     * request header (x402 v2) against the requirement.
+     *
      * @throws PaymentRequiredException when the payment is missing or invalid
      */
     public function verify(Request $request, PaymentRequirement $requirement): VerifiedPayment;
 
-    /** @return string|null the X-PAYMENT-RESPONSE header value, if the scheme produces one */
+    /**
+     * @return string|null the `PAYMENT-RESPONSE` header value — a base64-encoded
+     *                     x402 v2 `SettlementResponse` — if the scheme produces one
+     */
     public function settle(VerifiedPayment $payment): ?string;
 }
