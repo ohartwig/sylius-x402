@@ -1,3 +1,9 @@
+## [1.1.43](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.42...v1.1.43) (2026-11-05)
+
+### :bug: Fixes
+
+* **x402:** speak x402 protocol version 2 on the wire ([a1d13fb](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/commit/a1d13fb1f5065169efc1d2dc287ff7f4add2f094))
+
 ## [1.1.42](https://git.ole-hartwig.eu/ai-ready-platform/platform/sylius-x402/compare/v1.1.41...v1.1.42) (2026-11-05)
 
 ### :bug: Fixes
