@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Koh\SyliusX402\Tests;
 
+use Koh\SyliusAgentContracts\Http\AgentJsonResponder;
 use Koh\SyliusAgentContracts\Provider\PaymentBypassVoterInterface;
 use Koh\SyliusX402\Config\RequirementTableFactory;
 use Koh\SyliusX402\EventListener\X402RequestListener;
@@ -219,6 +220,69 @@ final class X402Test extends TestCase
 
         self::assertSame(200, $response->getStatusCode());
         self::assertSame('{"ok":true}', $response->getContent());
+    }
+
+    /**
+     * AUD-010-F02: the feed answers with public, max-age=900 and
+     * stale-while-revalidate. Delivered against a payment, that body would sit
+     * in a shared cache and be served to the next callers for nothing.
+     */
+    public function testAPaidResponseIsNeverStoredByACache(): void
+    {
+        $request = Request::create('/api/agent/feed', 'GET', server: ['HTTP_X_PAYMENT' => 'payment-payload']);
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $table = RequirementTableFactory::create(
+            [['pattern' => '^/api/agent/feed', 'amount' => '10000']],
+            'eip155:84532',
+            '0xAsset',
+            '0xPayee',
+        );
+        $verifier = $this->countingVerifier();
+        (new X402RequestListener($table, $verifier, [], true))($event);
+        self::assertFalse($event->hasResponse(), 'the payment was accepted');
+
+        // What ProductFeedController answers with.
+        $response = (new AgentJsonResponder())->respond(['items' => []], maxAge: 900, request: $request);
+        self::assertTrue($response->isCacheable(), 'precondition: the feed response is cacheable on its own');
+
+        (new X402ResponseListener($verifier))(new ResponseEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST,
+            $response,
+        ));
+
+        self::assertFalse($response->isCacheable());
+        $cacheControl = (string) $response->headers->get('Cache-Control');
+        self::assertStringContainsString('no-store', $cacheControl);
+        self::assertStringContainsString('private', $cacheControl);
+        self::assertStringNotContainsString('public', $cacheControl);
+        self::assertStringNotContainsString('max-age', $cacheControl);
+        self::assertStringNotContainsString('stale-', $cacheControl);
+        self::assertSame('receipt-1', $response->headers->get('X-PAYMENT-RESPONSE'));
+    }
+
+    /** Even a failed paid request is addressed to one payer. */
+    public function testAFailedPaidResponseIsNotStoredEither(): void
+    {
+        $response = new Response('', 500, ['Cache-Control' => 'public, max-age=60']);
+        $this->settle($this->countingVerifier(), $response);
+
+        self::assertStringContainsString('no-store', (string) $response->headers->get('Cache-Control'));
+    }
+
+    /** An unpaid, ungated response keeps whatever caching its controller chose. */
+    public function testAnUnpaidResponseKeepsItsCacheHeaders(): void
+    {
+        $response = (new AgentJsonResponder())->respond(['items' => []], maxAge: 900);
+        (new X402ResponseListener($this->countingVerifier()))(new ResponseEvent(
+            $this->createMock(HttpKernelInterface::class),
+            Request::create('/api/agent/feed'),
+            HttpKernelInterface::MAIN_REQUEST,
+            $response,
+        ));
+
+        self::assertTrue($response->isCacheable());
     }
 
     private function settle(PaymentVerifierInterface $verifier, Response $response): void
