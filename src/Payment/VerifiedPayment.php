@@ -9,7 +9,7 @@ namespace Koh\SyliusX402\Payment;
 
 final readonly class VerifiedPayment
 {
-    /** @param array<string, mixed> $payload the decoded X-PAYMENT header */
+    /** @param array<string, mixed> $payload the decoded `PaymentPayload` of the PAYMENT-SIGNATURE header */
     public function __construct(
         public PaymentRequirement $requirement,
         public array $payload = [],

@@ -9,6 +9,7 @@ namespace Koh\SyliusX402\Tests;
 
 use Koh\SyliusAgentContracts\Http\AgentJsonResponder;
 use Koh\SyliusAgentContracts\Provider\PaymentBypassVoterInterface;
+use Koh\SyliusX402\Config\RequirementTable;
 use Koh\SyliusX402\Config\RequirementTableFactory;
 use Koh\SyliusX402\EventListener\X402RequestListener;
 use Koh\SyliusX402\EventListener\X402ResponseListener;
@@ -49,10 +50,85 @@ final class X402Test extends TestCase
         /** @var array<string, mixed> $body */
         $body = json_decode((string) $response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
 
-        self::assertSame(1, $body['x402Version']);
-        self::assertSame('10000', $body['accepts'][0]['maxAmountRequired']);
+        self::assertSame(2, $body['x402Version']);
+        self::assertSame('10000', $body['accepts'][0]['amount']);
+        self::assertArrayNotHasKey('maxAmountRequired', $body['accepts'][0]);
         self::assertSame('0xPayee', $body['accepts'][0]['payTo']);
         self::assertSame('eip155:84532', $body['accepts'][0]['network']);
+        self::assertSame('http://localhost/api/agent/feed', $body['resource']['url']);
+        self::assertSame('Product feed', $body['resource']['description']);
+    }
+
+    /**
+     * The exact wire format of x402 v2 over HTTP: the `PaymentRequired`
+     * object, base64-encoded in the `PAYMENT-REQUIRED` header. Fed the values
+     * of the example in coinbase/x402 specs/transports-v2/http.md ("Payment
+     * Required Signaling"), the header must be that example byte for byte.
+     */
+    public function testThePaymentRequiredHeaderIsTheSpecExampleByteForByte(): void
+    {
+        $requirement = new PaymentRequirement(
+            pattern: '^/premium-data',
+            amount: '10000',
+            network: 'eip155:84532',
+            asset: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+            payTo: '0x209693Bc6afc0C5328bA36FaF03C514EF312287C',
+            description: 'Access to premium market data',
+            extra: ['name' => 'USDC', 'version' => '2'],
+        );
+        $verifier = new class implements PaymentVerifierInterface {
+            public function verify(Request $request, PaymentRequirement $requirement): VerifiedPayment
+            {
+                throw new PaymentRequiredException($requirement, 'PAYMENT-SIGNATURE header is required');
+            }
+
+            public function settle(VerifiedPayment $payment): ?string
+            {
+                return null;
+            }
+        };
+        $event = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            Request::create('https://api.example.com/premium-data', 'POST'),
+            HttpKernelInterface::MAIN_REQUEST,
+        );
+
+        (new X402RequestListener(new RequirementTable([$requirement]), $verifier, [], true))($event);
+        $response = $event->getResponse();
+
+        self::assertNotNull($response);
+        self::assertSame(402, $response->getStatusCode());
+        self::assertSame(
+            'eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQQVlNRU5ULVNJR05BVFVSRSBoZWFkZXIgaXMgcmVxdWlyZWQiLCJyZXNvdXJjZSI6eyJ1cmwiOiJodHRwczovL2FwaS5leGFtcGxlLmNvbS9wcmVtaXVtLWRhdGEiLCJkZXNjcmlwdGlvbiI6IkFjY2VzcyB0byBwcmVtaXVtIG1hcmtldCBkYXRhIiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo4NDUzMiIsImFtb3VudCI6IjEwMDAwIiwiYXNzZXQiOiIweDAzNkNiRDUzODQyYzU0MjY2MzRlNzkyOTU0MWVDMjMxOGYzZENGN2UiLCJwYXlUbyI6IjB4MjA5NjkzQmM2YWZjMEM1MzI4YkEzNkZhRjAzQzUxNEVGMzEyMjg3QyIsIm1heFRpbWVvdXRTZWNvbmRzIjo2MCwiZXh0cmEiOnsibmFtZSI6IlVTREMiLCJ2ZXJzaW9uIjoiMiJ9fV19',
+            $response->headers->get('PAYMENT-REQUIRED'),
+        );
+        // A browser-based agent only sees the header if it is exposed.
+        self::assertSame('PAYMENT-REQUIRED', $response->headers->get('Access-Control-Expose-Headers'));
+        self::assertSame('*', $response->headers->get('Access-Control-Allow-Origin'));
+        // The body repeats the object for clients that read only the body.
+        self::assertSame(
+            base64_decode((string) $response->headers->get('PAYMENT-REQUIRED'), true),
+            $response->getContent(),
+        );
+    }
+
+    /** `extra` is an object; an empty one is left out rather than sent as []. */
+    public function testAnEmptyExtraIsLeftOut(): void
+    {
+        self::assertArrayNotHasKey('extra', $this->requirement()->toAccepts());
+    }
+
+    /** ResourceInfo carries no empty description. */
+    public function testAResourceWithoutADescriptionOmitsIt(): void
+    {
+        self::assertSame(
+            ['url' => 'https://shop.example/f', 'mimeType' => 'application/json'],
+            $this->requirement()->toResourceInfo('https://shop.example/f'),
+        );
+        self::assertSame(
+            ['url' => 'https://shop.example/f', 'mimeType' => 'application/json'],
+            (new PaymentRequirement('^/f', '1', 'eip155:84532', '0xAsset', '0xPayee', description: ''))->toResourceInfo('https://shop.example/f'),
+        );
     }
 
     /** A cached challenge would keep demanding payment after it was made. */
@@ -197,7 +273,9 @@ final class X402Test extends TestCase
         $response = new Response('{}', 200);
         $this->settle($this->countingVerifier(), $response);
 
-        self::assertSame('receipt-1', $response->headers->get('X-PAYMENT-RESPONSE'));
+        self::assertSame('receipt-1', $response->headers->get('PAYMENT-RESPONSE'));
+        self::assertSame('PAYMENT-RESPONSE', $response->headers->get('Access-Control-Expose-Headers'));
+        self::assertFalse($response->headers->has('X-PAYMENT-RESPONSE'), 'the v1 header name is gone');
     }
 
     /** The caller already has their answer; a settlement failure must not take it away. */
@@ -229,7 +307,7 @@ final class X402Test extends TestCase
      */
     public function testAPaidResponseIsNeverStoredByACache(): void
     {
-        $request = Request::create('/api/agent/feed', 'GET', server: ['HTTP_X_PAYMENT' => 'payment-payload']);
+        $request = Request::create('/api/agent/feed', 'GET', server: ['HTTP_PAYMENT_SIGNATURE' => 'payment-payload']);
         $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $table = RequirementTableFactory::create(
             [['pattern' => '^/api/agent/feed', 'amount' => '10000']],
@@ -259,7 +337,7 @@ final class X402Test extends TestCase
         self::assertStringNotContainsString('public', $cacheControl);
         self::assertStringNotContainsString('max-age', $cacheControl);
         self::assertStringNotContainsString('stale-', $cacheControl);
-        self::assertSame('receipt-1', $response->headers->get('X-PAYMENT-RESPONSE'));
+        self::assertSame('receipt-1', $response->headers->get('PAYMENT-RESPONSE'));
     }
 
     /** Even a failed paid request is addressed to one payer. */

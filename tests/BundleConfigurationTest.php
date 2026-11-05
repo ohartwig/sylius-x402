@@ -70,6 +70,9 @@ final class BundleConfigurationTest extends TestCase
         $parameters = $this->parameters([
             'enabled' => true,
             'pay_to' => '0xPayee',
+            'asset' => '0xAsset',
+            'asset_name' => 'USDC',
+            'asset_version' => '2',
             'resources' => [['pattern' => '^/api/agent/feed', 'amount' => '10000']],
         ]);
 
@@ -84,6 +87,9 @@ final class BundleConfigurationTest extends TestCase
         $parameters = $this->parameters([
             'enabled' => true,
             'pay_to' => '0xPayee',
+            'asset' => '0xAsset',
+            'asset_name' => 'USDC',
+            'asset_version' => '2',
             'resources' => [
                 ['pattern' => '^/api/agent/feed', 'amount' => '10000', 'enabled' => false],
                 ['pattern' => '^/api/agent/other', 'amount' => '500'],
@@ -99,6 +105,9 @@ final class BundleConfigurationTest extends TestCase
         $parameters = $this->parameters([
             'enabled' => true,
             'pay_to' => '0xPayee',
+            'asset' => '0xAsset',
+            'asset_name' => 'USDC',
+            'asset_version' => '2',
             'resources' => [['pattern' => '^/api/agent/feed', 'amount' => '10000']],
         ]);
 
@@ -160,6 +169,94 @@ final class BundleConfigurationTest extends TestCase
         ]);
 
         self::assertSame(['POST'], $parameters['koh_x402.resources'][0]['methods']);
+    }
+
+    /**
+     * The exact scheme on EVM signs an EIP-3009 authorisation against the
+     * token's EIP-712 domain. Without name and version in `extra` the 402 asks
+     * for a payment no client can sign.
+     */
+    public function testEnablingOnEvmWithoutTheTokenDomainIsRefused(): void
+    {
+        foreach (['asset', 'asset_name', 'asset_version'] as $missing) {
+            $config = [
+                'enabled' => true,
+                'pay_to' => '0xPayee',
+                'asset' => '0xAsset',
+                'asset_name' => 'USDC',
+                'asset_version' => '2',
+            ];
+            unset($config[$missing]);
+
+            try {
+                $this->parameters($config);
+                self::fail(\sprintf('Expected the container build to be refused without %s.', $missing));
+            } catch (\InvalidArgumentException $exception) {
+                self::assertStringContainsString('asset_version', $exception->getMessage());
+            }
+        }
+    }
+
+    public function testTheTokenDomainBecomesExtra(): void
+    {
+        $parameters = $this->parameters([
+            'enabled' => true,
+            'pay_to' => '0xPayee',
+            'asset' => '0xAsset',
+            'asset_name' => 'USDC',
+            'asset_version' => '2',
+        ]);
+
+        self::assertSame(['name' => 'USDC', 'version' => '2'], $parameters['koh_x402.extra']);
+    }
+
+    public function testNoExtraIsInventedWhileTheDomainIsUnknown(): void
+    {
+        self::assertSame([], $this->parameters()['koh_x402.extra']);
+        self::assertSame([], $this->parameters(['asset_name' => 'USDC'])['koh_x402.extra']);
+        self::assertSame([], $this->parameters(['asset_version' => '2'])['koh_x402.extra']);
+    }
+
+    /** The EIP-712 domain is an EVM matter; another namespace does not need it. */
+    public function testANonEvmNetworkNeedsNoTokenDomain(): void
+    {
+        $parameters = $this->parameters([
+            'enabled' => true,
+            'network' => 'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1',
+            'pay_to' => 'Payee',
+            'asset' => 'Mint',
+            'asset_name' => 'USDC',
+            'asset_version' => '2',
+        ]);
+
+        self::assertTrue($parameters['koh_x402.enabled']);
+        self::assertSame([], $parameters['koh_x402.extra']);
+    }
+
+    /** x402 v2 names networks by CAIP-2 chain id; the v1 names are gone. */
+    public function testANetworkThatIsNotCaip2IsRejected(): void
+    {
+        foreach (['base-sepolia', 'base', 'eip155', 'eip155:', ':8453', 'EIP155:8453', "eip155:8453\n"] as $network) {
+            try {
+                $this->parameters(['network' => $network]);
+                self::fail(\sprintf('Expected %s to be rejected.', json_encode($network)));
+            } catch (InvalidConfigurationException $exception) {
+                self::assertStringContainsString('CAIP-2', $exception->getMessage());
+            }
+        }
+    }
+
+    /** An amount is atomic units as digits; anything else no client can pay. */
+    public function testAnAmountThatIsNotDigitsIsRejected(): void
+    {
+        foreach (['1.5', '-1', '', '1e3', "10\n"] as $amount) {
+            try {
+                $this->parameters(['resources' => [['pattern' => '^/f', 'amount' => $amount]]]);
+                self::fail(\sprintf('Expected %s to be rejected.', json_encode($amount)));
+            } catch (InvalidConfigurationException $exception) {
+                self::assertStringContainsString('digits', $exception->getMessage());
+            }
+        }
     }
 
     public function testTheExtensionAliasIsStable(): void
